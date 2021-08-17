@@ -1,0 +1,6 @@
+# Environment files
+.env
+
+# Misc
+db.sqlite3
+**/__pycache__
