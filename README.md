@@ -13,3 +13,7 @@ Why? I wanted more practice with Django.
 * [Django Rest Framework](https://www.django-rest-framework.org/)
 * [Supabase.io](https://supabase.io)
 * [PostgreSQL](https://www.postgresql.org/)
+
+## Can I use this for myself?
+
+Yea. The code here is pretty much just boilerplate for a blog type website. Nothing super specific except that you have to configure your own supabase instance.
