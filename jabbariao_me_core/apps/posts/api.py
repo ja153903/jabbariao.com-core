@@ -5,5 +5,5 @@ from .serializers import PostSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.prefetch_related("tags").all()
     serializer_class = PostSerializer
