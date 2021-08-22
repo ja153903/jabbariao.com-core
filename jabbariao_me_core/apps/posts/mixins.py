@@ -4,7 +4,7 @@ from .models import Post, Tag
 
 
 class PostTagMixin:
-    def add_tags_to_post(self, post: Post, tags: List[str]):
+    def add_tags_to_post(self, post: Post, tags: List[str]) -> None:
         if not tags:
             return
 
