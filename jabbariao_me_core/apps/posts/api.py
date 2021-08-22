@@ -7,7 +7,7 @@ from rest_framework.request import Request
 
 from .mixins import PostTagMixin
 from .models import Post
-from .serializers import PostSerializer, CreatePostSerializer
+from .serializers import PostSerializer, CreatePostSerializer, UpdatePostSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
     def create_post(self, request: Request) -> Response:
         serializer = CreatePostSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            validated_data = serializer.data
+            validated_data = serializer.validated_data
             new_post = Post.objects.create(title=validated_data["title"], content=validated_data["content"])
 
             if "tags" in validated_data:
@@ -35,5 +35,24 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
             return Response(data=validated_data, status=status.HTTP_201_CREATED)
 
         logger.error("[/api/posts/create_post]: Failed to create a new post")
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["PATCH"])
+    def update_post(self, request: Request, pk: int) -> Response:
+        post = self.get_object(pk=pk)
+
+        serializer = UpdatePostSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            for key, value in serializer.validated_data:
+                setattr(post, key, value)
+
+            post.save()
+
+            logger.info(f"[/api/posts/update_post/{pk}]: Updated post with id #{pk}")
+
+            return Response(data=post.data, status=status.HTTP_200_OK)
+
+        logger.info(f"[/api/posts/update_post/{pk}]: Failed to update post with id #{pk}")
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
