@@ -34,7 +34,7 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
 
             return Response(data=validated_data, status=status.HTTP_201_CREATED)
 
-        logger.error("[/api/posts/create_post]: Failed to create a new post")
+        logger.info("[/api/posts/create_post]: Failed to create a new post")
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
