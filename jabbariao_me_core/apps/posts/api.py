@@ -19,6 +19,7 @@ class PostViewSet(viewsets.ModelViewSet):
             validated_data = serializer.data
             new_post = Post.objects.create(title=validated_data["title"], content=validated_data["content"])
             new_post.save()
+            # TODO: Should set up a method to update the tags as well within this function
             return Response(data=validated_data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
