@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -6,6 +8,8 @@ from rest_framework.request import Request
 from .mixins import PostTagMixin
 from .models import Post
 from .serializers import PostSerializer, CreatePostSerializer
+
+logger = logging.getLogger(__name__)
 
 post_queryset_lookups = ["tags"]
 
@@ -26,6 +30,10 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
 
             new_post.save()
 
+            logger.info(f"[/api/posts/create_post]: Created post with id #{new_post.id} at {new_post.created}")
+
             return Response(data=validated_data, status=status.HTTP_201_CREATED)
+
+        logger.error("[/api/posts/create_post]: Failed to create a new post")
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

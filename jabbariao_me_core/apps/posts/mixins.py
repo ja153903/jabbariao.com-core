@@ -1,6 +1,9 @@
+import logging
 from typing import List
 
 from .models import Post, Tag
+
+logger = logging.getLogger(__name__)
 
 
 class PostTagMixin:
@@ -13,3 +16,5 @@ class PostTagMixin:
             post.tags.add(current_tag)
 
         post.save()
+
+        logger.info(f"[PostTagMixin::add_tags_to_post]: Added {len(tags)} tags ({tags}) to post with id # {post.id}")
