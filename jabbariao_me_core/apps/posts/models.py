@@ -9,5 +9,5 @@ class Post(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(blank=True, default="", max_length=256)
+    name = models.CharField(blank=True, default="", max_length=256, primary_key=True)
     posts = models.ManyToManyField(Post, related_name="tags")
