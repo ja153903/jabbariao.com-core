@@ -11,11 +11,11 @@ from .serializers import PostSerializer, CreatePostSerializer
 
 logger = logging.getLogger(__name__)
 
-post_queryset_lookups = ["tags"]
+post_queryset_prefetch_related_lookups = ["tags"]
 
 
 class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
-    queryset = Post.objects.prefetch_related(*post_queryset_lookups).all()
+    queryset = Post.objects.prefetch_related(*post_queryset_prefetch_related_lookups).all()
     serializer_class = PostSerializer
 
     @action(detail=False, methods=["POST"])
