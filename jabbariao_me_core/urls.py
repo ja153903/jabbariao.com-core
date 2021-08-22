@@ -19,11 +19,11 @@ from rest_framework.routers import DefaultRouter
 
 from apps.posts.api import PostViewSet
 
-router = DefaultRouter()
-router.register(r"posts", PostViewSet)
+api_router = DefaultRouter()
+api_router.register(r"posts", PostViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
-    path("", include(router.urls)),
+    path("api/", include(api_router.urls)),
 ]
