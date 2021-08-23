@@ -56,9 +56,9 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
 
             logger.info(f"[/api/posts/update_post/{pk}]: Updated post with id #{pk}")
 
-            serialized_data = PostSerializer(post).data
+            output_serializer_data = PostSerializer(post).data
 
-            return Response(data=serialized_data, status=status.HTTP_200_OK)
+            return Response(data=output_serializer_data, status=status.HTTP_200_OK)
 
         logger.info(f"[/api/posts/update_post/{pk}]: Failed to update post with id #{pk}")
 
