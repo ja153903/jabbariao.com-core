@@ -39,12 +39,12 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["PATCH"])
-    def update_post(self, request: Request, pk: int) -> Response:
-        post = self.get_object(pk=pk)
+    def update_post(self, request, pk) -> Response:
+        post = self.get_object()
 
         serializer = UpdatePostSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            for key, value in serializer.validated_data:
+            for key, value in serializer.validated_data.items():
                 if key == "tags":
                     # Assume that for updating tags that we are given all tags
                     # that exist on the post
@@ -56,7 +56,9 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
 
             logger.info(f"[/api/posts/update_post/{pk}]: Updated post with id #{pk}")
 
-            return Response(data=post.data, status=status.HTTP_200_OK)
+            serialized_data = PostSerializer(post).data
+
+            return Response(data=serialized_data, status=status.HTTP_200_OK)
 
         logger.info(f"[/api/posts/update_post/{pk}]: Failed to update post with id #{pk}")
 
