@@ -45,6 +45,7 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
         serializer = UpdatePostSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             for key, value in serializer.validated_data:
+                # TODO: Will need better logic here for updating the tags
                 setattr(post, key, value)
 
             post.save()
