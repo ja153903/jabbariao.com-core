@@ -27,5 +27,13 @@ class PostTagMixin:
 
         name_not_in_list = ~Q(name__in=tags)
 
+        # Delete any tags that are not in the current list
         Post.tags.through.filter(name_not_in_list, post=post).delete()
-        self.add_tags_to_post(post, tags)
+
+        updated_tags = []
+
+        for tag in tags:
+            if post.tags.filter(name=tag).exists():
+                updated_tags.append(tag)
+
+        self.add_tags_to_post(post, updated_tags)
