@@ -45,7 +45,9 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
         serializer = UpdatePostSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             for key, value in serializer.validated_data:
-                if key != "tags":
+                if key == "tags":
+                    self.update_tags_for_post(post, value)
+                else:
                     setattr(post, key, value)
 
             post.save()
