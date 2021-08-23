@@ -46,6 +46,8 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             for key, value in serializer.validated_data:
                 if key == "tags":
+                    # Assume that for updating tags that we are given all tags
+                    # that exist on the post
                     self.update_tags_for_post(post, value)
                 else:
                     setattr(post, key, value)
