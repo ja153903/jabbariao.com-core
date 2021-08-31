@@ -33,6 +33,7 @@ class PostTagMixin:
         updated_tags = []
 
         for tag in tags:
+            # Just add tags that don't already exist
             if not post.tags.filter(name=tag).exists():
                 updated_tags.append(tag)
 
