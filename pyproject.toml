@@ -16,6 +16,7 @@ python-dotenv = "^0.19.0"
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.14.0"
 flake8 = "^3.9.2"
+neovim = "^0.3.1"
 
 [tool.poetry.scripts]
 start = 'scripts.server:main'
