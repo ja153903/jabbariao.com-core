@@ -39,7 +39,7 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["PATCH"])
-    def update_post(self, request, pk) -> Response:
+    def update_post(self, request: Request, pk: int) -> Response:
         post = self.get_object()
 
         serializer = UpdatePostSerializer(data=request.data)
@@ -54,12 +54,24 @@ class PostViewSet(PostTagMixin, viewsets.ModelViewSet):
 
             post.save()
 
-            logger.info(f"[/api/posts/update_post/{pk}]: Updated post with id #{pk}")
+            logger.info(f"[/api/posts/{pk}/update_post/]: Updated post with id #{pk}")
 
             output_serializer_data = PostSerializer(post).data
 
             return Response(data=output_serializer_data, status=status.HTTP_200_OK)
 
-        logger.info(f"[/api/posts/update_post/{pk}]: Failed to update post with id #{pk}")
+        logger.info(f"[/api/posts/{pk}/update_post/]: Failed to update post with id #{pk}")
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["DELETE"])
+    def delete_post(self, request: Request, pk: int) -> Response:
+        try:
+            Post.objects.filter(pk=pk).delete()
+        except Post.DoesNotExist:
+            logger.info(f"[/api/posts/{pk}/delete_post]: Failed to delete post with id #{pk}")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        logger.info(f"[/api/posts/{pk}/delete_post]: Deleted post with id #{pk}")
+
+        return Response(status=status.HTTP_200_OK)
